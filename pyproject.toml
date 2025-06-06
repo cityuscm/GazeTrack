@@ -1,0 +1,38 @@
+[project]
+name = "gazematcher"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "aioreactive>=0.20.0",
+    "cyndilib>=0.0.6",
+    "expression>=5.6.0",
+    "fastapi[standard]==0.115.12",
+    "opencv-contrib-python>=4.11.0.86",
+    "pupil-labs-realtime-api>=1.5.0",
+    "python-osc>=1.9.3",
+    "torch==2.7.1",
+    "torchvision==0.22.1",
+    "tqdm>=4.67.1",
+    "wireup>=1.0.2",
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux'" },
+]
+torchvision = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'linux'" },
+  { index = "pytorch-cu128", marker = "sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
