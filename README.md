@@ -1,6 +1,6 @@
 # GazeTrack
 
-[![Paper](https://img.shields.io/badge/Paper-10.1145/3757376.3771419-blue)](https://doi.org/10.1145/3757376.3771419)
+[![Paper](https://img.shields.io/badge/Paper-10.1145/3757376.3771419-blue)](https://doi.org/10.1145/3757376.3771419) [![Build](https://github.com/cityuscm/GazeTrack/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/cityuscm/GazeTrack/actions/workflows/build.yml)
 
 This is a monorepo containing the official implementation of [Multi-user Gaze Tracking via Dynamic Image Mapping in 360 Immersive 3D
 Visualization Systems](https://doi.org/10.1145/3757376.3771419)
