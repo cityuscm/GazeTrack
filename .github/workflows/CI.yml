@@ -53,10 +53,17 @@ jobs:
       - name: Install just
         uses: extractions/setup-just@v3
 
-      - name: Install fd
-        uses: taiki-e/install-action@v2
-        with:
-          tool: sharkdp/fd@latest
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Check Rust version
+        run: rustc --version
+
+      - name: Add cargo binary to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install fd (via cargo)
+        run: cargo install fd-find
 
       - name: Check for required tools
         run: |
