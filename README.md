@@ -2,7 +2,7 @@
 
 [![Paper](https://img.shields.io/badge/Paper-10.1145/3757376.3771419-blue)](https://doi.org/10.1145/3757376.3771419)
 
-Official implementation of [Multi-user Gaze Tracking via Dynamic Image Mapping in 360 Immersive 3D
+This is a monorepo containing the official implementation of [Multi-user Gaze Tracking via Dynamic Image Mapping in 360 Immersive 3D
 Visualization Systems](https://doi.org/10.1145/3757376.3771419)
 
 [![Hero](https://raw.githubusercontent.com/cityuscm/assets/refs/heads/main/images/gazetrack/img.webp)](https://raw.githubusercontent.com/cityuscm/assets/refs/heads/main/images/gazetrack/img.webp)
@@ -24,10 +24,14 @@ The easiest way to get started is to use the prebuilt app.
 
 #### Download Prebuilt App
 
-Download the prebuilt app from [releases](./releases).
+Download the prebuilt app from [releases](https://github.com/cityuscm/GazeTrack/releases).
+
+Unzip the downloaded file and run the executable with a terminal:
+
+> On Unix-like systems, you may need to make it executable first by running: `chmod +x <executable_name>`
 
 ```bash
-./gazetrack-web
+./gazetrack-web # or any derivation of the file name
 ```
 
 ### Running from Source
