@@ -92,7 +92,7 @@ jobs:
         with:
           name: gazetrack-${{ matrix.os }}-python${{ matrix.python-version }}
           path: |
-            /backend/packages/web/dist/binary
+            backend/packages/web/dist/binary/**
           retention-days: 30
 
       - name: Clean up
