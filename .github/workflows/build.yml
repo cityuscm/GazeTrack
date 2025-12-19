@@ -74,6 +74,9 @@ jobs:
       - name: check rust version
         run: rustc --version
 
+      - name: setup sccache
+        uses: mozilla-actions/sccache-action@v0.0.9
+
       - name: install fd
         uses: taiki-e/cache-cargo-install-action@v2
         with:
@@ -98,6 +101,9 @@ jobs:
           just sync
 
       - name: build
+        env:
+          SCCACHE_GHA_ENABLED: "true"
+          RUSTC_WRAPPER: "sccache"
         run: |
           just build-dist
 
