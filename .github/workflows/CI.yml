@@ -76,6 +76,9 @@ jobs:
           echo "FD version:"
           fd --version
 
+      - name: setup Hatch
+        run: uv tool install hatch
+
       - name: Sync dependencies
         run: |
           just sync
