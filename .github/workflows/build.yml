@@ -1,11 +1,25 @@
-name: CI
+name: Build
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+      - "**/*.mdx"
   pull_request:
-    branches: [main, develop]
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+      - "**/*.mdx"
   workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
 
 defaults:
   run:
@@ -13,6 +27,7 @@ defaults:
 
 jobs:
   build:
+    timeout-minutes: 30
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -21,25 +36,25 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: checkout
+        uses: actions/checkout@v6
 
-      - name: Install uv
+      - name: install uv
         uses: astral-sh/setup-uv@v7
         with:
           version: "latest"
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: setup python
         uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Set up Bun
+      - name: setup bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Cache dependencies
+      - name: cache dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -50,22 +65,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-deps-
 
-      - name: Install just
+      - name: install just
         uses: extractions/setup-just@v3
 
-      - name: Install Rust
+      - name: setup rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Check Rust version
+      - name: check rust version
         run: rustc --version
 
-      - name: Add cargo binary to PATH
-        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: install fd
+        uses: taiki-e/cache-cargo-install-action@v2
+        with:
+          tool: fd-find@10.3.0
 
-      - name: Install fd (via cargo)
-        run: cargo install fd-find
-
-      - name: Check for required tools
+      - name: verify tools
         run: |
           echo "Bun version:"
           bun --version
@@ -76,18 +90,18 @@ jobs:
           echo "FD version:"
           fd --version
 
-      - name: setup Hatch
+      - name: setup hatch
         run: uv tool install hatch
 
-      - name: Sync dependencies
+      - name: sync dependencies
         run: |
           just sync
 
-      - name: Build project
+      - name: build
         run: |
           just build-dist
 
-      - name: Upload build artifacts
+      - name: upload artifacts
         uses: actions/upload-artifact@v6
         with:
           name: gazetrack-${{ matrix.os }}-python${{ matrix.python-version }}
@@ -95,6 +109,6 @@ jobs:
             backend/packages/web/dist/binary/**
           retention-days: 30
 
-      - name: Clean up
+      - name: cleanup
         if: always()
         run: just clean
