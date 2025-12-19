@@ -40,8 +40,8 @@ Unzip the downloaded file and run the executable with a terminal:
 
 ```bash
 # Clone the repository
-git clone https://github.com/gazetrack/gazetrack.git
-cd gazetrack
+git clone https://github.com/cityuscm/GazeTrack.git
+cd GazeTrack
 ```
 
 #### 1. Using `just` (Recommended)
