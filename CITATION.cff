@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: If you find our code helpful in your research or work please cite our paper.
+preferred-citation:
+  authors:
+    - family-names: Ruan
+      given-names: Lingyan
+      orcid: https://orcid.org/0000-0001-7799-9148
+    - family-names: Chen
+      given-names: Bin
+      orcid: https://orcid.org/0000-0003-3022-1931
+    - family-names: Chow
+      given-names: Chi-Hang
+      orcid: https://orcid.org/0009-0000-8071-043X
+    - family-names: Chung
+      given-names: Hiu-Lok
+      orcid: https://orcid.org/0009-0008-2222-3818
+    - family-names: Leung
+      given-names: Pok-Yin Victor
+      orcid: https://orcid.org/0000-0003-1536-8636
+    - family-names: Lam
+      given-names: Miu-Ling
+      orcid: https://orcid.org/0000-0002-5333-7454
+  doi: 10.1145/3757376.3771419
+  identifiers:
+    - type: doi
+      value: 10.1145/3757376.3771419
+    - type: url
+      value: http://dx.doi.org/10.1145/3757376.3771419
+  title: >-
+    Multi-user Gaze Tracking via Dynamic Image Mapping in 360 Immersive 3D
+    Visualization Systems
+  url: http://dx.doi.org/10.1145/3757376.3771419
+  conference:
+    name: >-
+      SA Technical Communications '25: SIGGRAPH Asia 2025 Technical
+      Communications
+  database: Crossref
+  date-published: 2025-12-14
+  year: 2025
+  month: 12
+  journal: Proceedings of the SIGGRAPH Asia 2025 Technical Communications
+  publisher:
+    name: ACM
+  start: "1"
+  end: "4"
+  type: conference-paper
