@@ -30,7 +30,10 @@ vendor-core:
 package:
     cd backend/packages/web && hatch build && export PYAPP_PROJECT_PATH=$(fd -t f --absolute-path 'py3-none-any.whl' -1) && hatch build -t binary
 
-build-dist: clean build vendor-core merge-deps package unmerge-deps clean
+rename-executable:
+    uv run python backend/scripts/rename_build_artifact.py
+
+build-dist: clean build vendor-core merge-deps package rename-executable unmerge-deps clean
 
 merge-deps:
     uv run --with tomlkit python backend/scripts/manage_deps.py merge backend/packages/web/pyproject.toml backend/packages/core/pyproject.toml
