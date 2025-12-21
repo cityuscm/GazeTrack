@@ -7,7 +7,7 @@ Visualization Systems](https://doi.org/10.1145/3757376.3771419)
 
 [![Hero](https://raw.githubusercontent.com/cityuscm/assets/refs/heads/main/images/gazetrack/img.webp)](https://raw.githubusercontent.com/cityuscm/assets/refs/heads/main/images/gazetrack/img.webp)
 
-For a more comprehensive documentation, please refer to the [docs](docs/).
+For a more comprehensive documentation, please refer to the [docs](https://cityuscm.github.io/GazeTrack).
 
 ---
 
