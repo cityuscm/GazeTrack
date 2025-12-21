@@ -8,10 +8,10 @@ hero:
     file: ../../assets/logo.svg
   actions:
     - text: Get started
-      link: /GazeTrack/home/getting-started
+      link: ./home/getting-started
       icon: right-arrow
     - text: Read the overview
-      link: /GazeTrack/home/
+      link: ./home/
       icon: document
       variant: minimal
 ---
@@ -22,15 +22,15 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 <CardGrid stagger>
 	<Card title="Read the overview" icon="information">
-		Start with the [Home page](/GazeTrack/home/) to understand what GazeTrack is and when to use it.
+		Start with the [Home page](./home/) to understand what GazeTrack is and when to use it.
 	</Card>
 	<Card title="Getting started" icon="rocket">
-		Follow the [Getting Started guide](/GazeTrack/home/getting-started) to set up your environment and run GazeTrack locally.
+		Follow the [Getting Started guide](./home/getting-started) to set up your environment and run GazeTrack locally.
 	</Card>
 	<Card title="Use the prebuilt app" icon="laptop">
-		Jump straight into a ready-to-use, end-to-end pipeline with the [Prebuilt App](/GazeTrack/home/getting-started#prebuilt-app).
+		Jump straight into a ready-to-use, end-to-end pipeline with the [Prebuilt App](./home/getting-started#prebuilt-app).
 	</Card>
 	<Card title="API reference" icon="open-book">
-		Integrate GazeTrack into your own applications using the [Core API Reference](/GazeTrack/core/api-reference).
+		Integrate GazeTrack into your own applications using the [Core API Reference](./core).
 	</Card>
 </CardGrid>
