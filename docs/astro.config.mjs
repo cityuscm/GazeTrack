@@ -6,6 +6,8 @@ import starlightHeadingBadgesPlugin from 'starlight-heading-badges';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://cityuscm.github.io',
+	base: '/GazeTrack',
 	integrations: [
 		starlight({
 			title: 'GazeTrack',

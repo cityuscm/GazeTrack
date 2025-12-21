@@ -3,14 +3,26 @@ name: Build
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.mdx"
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - "justfile"
+      - "!.github/**"
+      - "!README.md"
+      - "!CITATION.cff"
+      - "!vscode.code-workspace"
+      - "!**/*.md"
   pull_request:
     branches: [main]
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.mdx"
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - "justfile"
+      - "!.github/**"
+      - "!README.md"
+      - "!CITATION.cff"
+      - "!vscode.code-workspace"
+      - "!**/*.md"
   workflow_dispatch:
   workflow_call:
 
