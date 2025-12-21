@@ -1,0 +1,36 @@
+---
+title: GazeTrack Documentation
+description: Build real-time gaze projection systems with the GazeTrack runtime and prebuilt app.
+template: splash # Remove or comment out this line to display the site sidebar on this page.
+hero:
+  tagline: Asynchronous, event-driven gaze projection for real-time scenes.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Get started
+      link: /home/getting-started
+      icon: right-arrow
+    - text: Read the overview
+      link: /home/
+      icon: document
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Explore GazeTrack
+
+<CardGrid stagger>
+	<Card title="Read the overview" icon="information">
+		Start with the [Home page](/home/) to understand what GazeTrack is and when to use it.
+	</Card>
+	<Card title="Getting started" icon="rocket">
+		Follow the [Getting Started guide](/home/getting-started) to set up your environment and run GazeTrack locally.
+	</Card>
+	<Card title="Use the prebuilt app" icon="laptop">
+		Jump straight into a ready-to-use, end-to-end pipeline with the [Prebuilt App](/home/getting-started#prebuilt-app).
+	</Card>
+	<Card title="API reference" icon="open-book">
+		Integrate GazeTrack into your own applications using the [Core API Reference](/core/api-reference).
+	</Card>
+</CardGrid>

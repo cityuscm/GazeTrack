@@ -1,0 +1,56 @@
+---
+title: Getting Started
+description: How to get started with GazeTrack
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+GazeTrack is a asynchronous, event-driven library and software stack for real-time projection of gaze data onto a scene.
+
+## A Tour of GazeTrack
+
+GazeTrack consists of a number of decoupled components, each with a specific role in the system. The architecture is designed to be flexible and extensible, allowing users to customize the system to their specific needs.
+
+The easiest way to get started is to use the prebuilt app, which is a ready-to-use application that provides a end-to-end pipeline for real-time projection of gaze data onto a scene.
+
+### Prebuilt App
+
+The prebuilt app is a ready-to-use application that provides a end-to-end pipeline for real-time projection of gaze data onto a scene. It is a good starting point for users who want to get started with GazeTrack.
+
+To get started, you can clone the repository and run the prebuilt app:
+
+:::tip
+We __strongly recommends__ using [uv](https://docs.astral.sh/uv/) or [pixi](https://pixi.sh/) to manage your python distributions1 and dependencies to avoid any issues with missing dependencies or version conflicts.
+
+However, if you prefer to use other tools like pip, conda, poetry, or any other pip-compatible tool, you can use them as well.
+:::
+
+:::note
+You would need a recent version of python `>=3.13` as the codebase leverages some of the latest features of python.
+:::
+
+
+```bash
+# Clone the repository
+git clone https://github.com/gazetrack/gazetrack.git
+
+# Navigate to the prebuilt app directory
+cd gazetrack
+
+# Install dependencies
+just deps
+
+# Run the app
+just run
+```
+
+
+### Creating custom applications
+
+If you want to create a custom application, you can use the GazeTrack Core library to build your own application.
+
+:::note
+We currently only provide Python bindings for the GazeTrack Core library. 
+:::
+
+Refer to the [Installation](/home/installation) guide for more information.

@@ -68,7 +68,7 @@ cd frontend && bun install
 # Build the frontend
 cd frontend && bun run build
 
-# Copy the built artifacts to the backend
+# Copy the frontend artifacts to the backend
 cp -r frontend/build/* backend/packages/web/src/gazetrack_web/ui/
 
 # Run the app

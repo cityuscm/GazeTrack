@@ -1,0 +1,27 @@
+---
+title: GazeTrack Core Runtime API
+description: Public APIs for composing pipelines, running the matcher engine, and exporting gaze projections.
+---
+
+## Overview
+The core runtime API provides a comprehensive set of modules for building gaze tracking and scene analysis pipelines.
+
+The API is organized into modular components that can be composed together to create custom gaze tracking and scene analysis pipelines. It exposes a clean, composable interface for building gaze tracking systems.
+
+The decoupled design allows for flexible composition of different components, enabling developers to mix and match modules based on their specific requirements.
+Abstract base classes and protocols define the contracts that all implementations must follow, ensuring consistency across the system while enabling flexible extension.
+
+#### Modules
+---
+
+| Module | Description |
+|--------|-------------|
+| [Structs & Timestamping](./reference/struct/) | Data classes, payload hierarchy, projection math helpers |
+| [Functional Helpers](./reference/functions/) | `assemble_payload` and `stamp` helpers |
+| [Producer Protocol & Implementations](./reference/producers/) | Streaming inputs for POV, gaze, and scene data |
+| [Aggregators](./reference/aggregators/) | Discovery utilities that mint producers per hardware source |
+| [Interfaces](./reference/interface/) | Detector protocols and functional contracts shared across the pipeline |
+| [Pipeline Stages](./reference/pipeline/) | Stage protocols plus reference `collect/compress/process/match/validate/project` implementations |
+| [Engine](./reference/engine/) | Async orchestration, lifecycle, and configuration surface |
+| [Event Bus](./reference/event/) | Event structures and pub/sub contract |
+| [Exporters](./reference/exporter/) | Exporter protocol, listeners, and OSC exporter factory |

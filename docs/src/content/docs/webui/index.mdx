@@ -1,0 +1,24 @@
+---
+title: Web UI
+description: Example web UI for a GazeTrack application, part of the prebuilt app
+sidebar:
+  badge:
+    text: Web
+    variant: default
+---
+
+## Overview
+The Web UI is an example control surface for a GazeTrack application.
+
+It is implemented as a [SvelteKit](https://kit.svelte.dev/) frontend and is intended to be used with the prebuilt app.
+
+You can use the web ui as a reference for building your own control surface.
+
+## Architecture
+The UI communicates with the control backend over HTTP to:
+
+- **Trigger actions** (e.g. start/stop pipeline components).
+- **Read state** (e.g. configuration and runtime status).
+- **Exchange data** required to operate the application.
+
+The backend is implemented with [FastAPI](https://fastapi.tiangolo.com/).

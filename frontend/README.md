@@ -21,20 +21,22 @@ The Web UI communicates with the GazeTrack control backend over HTTP to:
 ### Prerequisites
 
 - **Node.js**: Ensure you have a recent version of Node.js installed.
-- **Package Manager**: We use `pnpm`.
+- **Package Manager**: Any modern package manager that is compatible with [npm](https://npmjs.com/), we recommend [bun](https://bun.sh/) or [pnpm](https://pnpm.io/).
 
 ### Installation & Running
 
 1. **Install dependencies**:
 
    ```bash
-   pnpm install
+   # or yarn, pnpm, bun, etc.
+   npm install
    ```
 
 2. **Run the development server**:
 
    ```bash
-   pnpm run dev
+   # or yarn, pnpm, bun, etc.
+   npm run dev
    ```
 
    The application should now be accessible at `http://localhost:5173` (or the port shown in your terminal).

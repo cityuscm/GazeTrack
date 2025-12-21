@@ -1,0 +1,119 @@
+---
+title: Using the prebuilt app
+description: How to use the prebuilt app
+sidebar:
+  badge:
+    text: App
+    variant: default
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+The prebuilt app should be sufficient for the majority of use cases, as it was part of our production pipeline.
+
+The following example shows how to use the prebuilt app assuming a basic setup.
+
+---
+
+### Using the binary
+
+Download the binary from our [Github release](https://github.com/cityuscm/GazeTrack/releases)
+
+```bash
+# platform can be linux, darwin(macos), or windows depending on your os
+./gazetrack-web-<platform>
+```
+
+### Running from source
+
+---
+
+:::caution
+The following shell commands assume that you have [Just](https://just.systems/) installed on your system.
+
+If you prefer to not use Just, you can install the dependencies manually by invoking the following commands:
+<Tabs>
+    <TabItem label="python">
+        <Tabs>
+            <TabItem label="uv">
+            ```bash
+            uv sync
+            ```
+            </TabItem>
+            <TabItem label="pixi">
+            ```bash
+            pixi sync
+            ```
+            </TabItem>
+            <TabItem label="pip">
+            ```bash
+            pip install -r requirements.txt
+            ```
+            </TabItem>
+            <TabItem label="conda">
+            ```bash
+            conda env update --file environment.yml
+            ```
+            </TabItem>
+            <TabItem label="poetry">
+            ```bash
+            poetry install
+            ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+    <TabItem label="node">
+        <Tabs>
+            <TabItem label="npm">
+            ```bash
+            npm install
+            ```
+            </TabItem>
+            <TabItem label="yarn">
+            ```bash
+            yarn install
+            ```
+            </TabItem>
+            <TabItem label="pnpm">
+            ```bash
+            pnpm install
+            ```
+            </TabItem>
+            <TabItem label="bun">
+            ```bash
+            bun install
+            ```
+            </TabItem>
+        </Tabs>
+    </TabItem>
+</Tabs>
+:::
+
+```bash
+# sync dependencies
+just sync
+
+# run the app
+just run
+```
+
+Or install dependencies and run manually:
+
+```bash
+# Install backend dependencies
+cd backend && uv sync
+
+# Install frontend dependencies
+cd frontend && bun install
+
+# Build the frontend
+cd frontend && bun run build
+
+# Copy the frontend artifacts to the backend
+cp -r frontend/build/* backend/packages/web/src/gazetrack_web/ui/
+
+# Run the app
+cd backend && uv run gazetrack-web
+# or
+python -m uvicorn gazetrack_web.app:app --host 0.0.0.0 --port 8000
+```
