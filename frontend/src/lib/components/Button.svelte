@@ -9,13 +9,23 @@
 		type?: 'button' | 'toggle';
 		selected?: boolean;
 		onclick?: () => void;
+		disabled?: boolean;
 	}
 
-	let { name, address, type = 'button', selected = $bindable(false), onclick }: Props = $props();
+	let {
+		name,
+		address,
+		type = 'button',
+		selected = $bindable(false),
+		onclick,
+		disabled = false
+	}: Props = $props();
 
 	const displayAddress = $derived(address ?? 'Unlisted');
 
-	const clickCallback = $derived(type === 'toggle' ? () => (selected = !selected) : onclick);
+	const clickCallback = $derived(
+		disabled ? undefined : type === 'toggle' ? () => (selected = !selected) : onclick
+	);
 
 	const selectedCss = $derived(
 		selected ? 'filter-brightness-105 translate-0!' : 'hover:(filter-brightness-110 -translate-2)'
@@ -43,8 +53,11 @@
 
 <button
 	onclick={clickCallback}
+	{disabled}
 	class="relative group flex flex-row items-start justify-between min-w-60 min-h-16 w-full p-2
-	text-gray-50 transition-all duration-200 cursor-pointer"
+	text-gray-50 transition-all duration-200 {disabled
+		? 'opacity-50 cursor-not-allowed'
+		: 'cursor-pointer'}"
 >
 	<span class="parent-size bg-gray-950/50 rounded-md"></span>
 	<span class="parent-size -translate-1 {overlayCss} transition-all! duration-200 rounded-md">
