@@ -14,6 +14,7 @@ from returns.result import Success, Failure
 from gazetrack_core.event.EventBus import EventBus, Event
 from gazetrack_core.function.functions import assemble_payload, stamp
 from gazetrack_core.pipeline.interfaces import Pipeline
+from gazetrack_core.pipeline.exceptions import SafelyIgnoreableError
 from gazetrack_core.producer.interface import Producer
 
 
@@ -79,7 +80,6 @@ class Engine(AsyncContextManagerMixin):
         self._circuit_breaker = CircuitBreakerState()
         self._last_iteration_time = 0.0
 
-        # Locks must be created inside an async context; initialised in _loop.
         self._lock: anyio.Lock | None = None
         self._state_lock: anyio.Lock | None = None
 
@@ -89,6 +89,8 @@ class Engine(AsyncContextManagerMixin):
     async def __asynccontextmanager__(self) -> AsyncGenerator[Self]:
         self.context = asyncer.create_task_group()
         async with self.context:
+            self._lock = anyio.Lock()
+            self._state_lock = anyio.Lock()
             yield self
 
     @staticmethod
@@ -229,10 +231,16 @@ class Engine(AsyncContextManagerMixin):
                     await self._bus.publish(Event("result", value))
                     await self._record_success()
                 case Failure(value):
-                    error_msg = str(value)
-                    await self._bus.publish(Event("error", error_msg))
-                    await self._record_failure()
-                    logger.error(f"Pipeline processing failed: {error_msg}")
+                    match value:
+                        case SafelyIgnoreableError():
+                            logger.warning(f"Safe to ignore error: {value}")
+                            await self._record_success()
+                            return
+                        case _:
+                            error_msg = str(value)
+                            await self._bus.publish(Event("error", error_msg))
+                            await self._record_failure()
+                            logger.error(f"Pipeline processing failed: {error_msg}")
         except RuntimeError as e:
             error_msg = str(e)
             await self._bus.publish(Event("error", error_msg))
@@ -247,8 +255,6 @@ class Engine(AsyncContextManagerMixin):
             await anyio.sleep(0)
 
     async def _loop(self) -> None:
-        self._lock = anyio.Lock()
-        self._state_lock = anyio.Lock()
         async with self._lock:
             async with self._state_lock:
                 self._running.set()

@@ -106,10 +106,9 @@ export const apiRoutes = {
 		}),
 
 	control: (start: boolean, options?: RequestOptions) =>
-		makeRequestWithRetry('/api/control', {
+		makeRequestWithRetry(`/api/control?start=${start}`, {
 			...options,
-			method: 'POST',
-			body: JSON.stringify({ start })
+			method: 'POST'
 		})
 };
 

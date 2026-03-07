@@ -1,4 +1,5 @@
 import cv2
+from loguru import logger
 import numpy as np
 import torch
 
@@ -27,24 +28,12 @@ from gazetrack_core.struct.PipelineStruct import (
 )
 from gazetrack_core.struct.Timestamped import Timestamped
 from gazetrack_core.utils import unzip2, transform_points
-
-
-class PipelineError(Exception):
-    """Base exception for pipeline errors"""
-
-    pass
-
-
-class ValidationError(PipelineError):
-    """Raised when input validation fails"""
-
-    pass
-
-
-class ProcessingError(PipelineError):
-    """Raised when processing fails"""
-
-    pass
+from gazetrack_core.pipeline.exceptions import (
+    PipelineError,
+    ValidationError,
+    ProcessingError,
+    SafelyIgnoreableError,
+)
 
 
 def compress(payload: Payload) -> Result[CompressedPayload, Exception]:
@@ -158,8 +147,10 @@ def match(
             if len(visual_idx) == 0:
                 return Failure(ValidationError("No matches found for a visual feature"))
 
-            visual_kps = feature.keypoints[visual_idx].cpu().numpy()
-            scene_kps = scene_keypoints_cpu[scene_idx]
+            visual_idx_cpu = visual_idx.cpu()
+            scene_idx_cpu = scene_idx.cpu()
+            visual_kps = feature.keypoints[visual_idx_cpu].cpu().numpy()
+            scene_kps = scene_keypoints_cpu[scene_idx_cpu]
             matches.append(match_data_from_keypoints(visual_kps, scene_kps))
 
         del scene_keypoints_cpu
@@ -179,7 +170,15 @@ def match(
     except (ValidationError, ProcessingError) as e:
         return Failure(e)
     except Exception as e:
-        return Failure(ProcessingError(f"Unexpected error in match: {str(e)}"))
+        match e:
+            case cv2.error():  # Ignore OpenCV errors
+                return Failure(
+                    SafelyIgnoreableError(f"OpenCV error in match: {str(e)}")
+                )
+            case IndexError():  # Ignore pure black frames (empty arrays)
+                return Failure(SafelyIgnoreableError(f"Index error in match: {str(e)}"))
+            case _:
+                return Failure(ProcessingError(f"Unexpected error in match: {str(e)}"))
 
 
 def validate(matched: Matched) -> Result[Validated, Exception]:
@@ -254,16 +253,25 @@ def project(validated: Validated) -> Result[Final, Exception]:
 def default_pipeline_from(model: Feature2D[Feature]) -> Pipeline:
     def pipeline(
         timestamped_payload: Timestamped[Payload],
-    ) -> Result[Timestamped[Final], Exception]:
+    ) -> Result[Timestamped[Final], PipelineError]:
         time = timestamped_payload.timestamp
-        compress_result = compress(timestamped_payload.value)
-        process_result = compress_result.bind(lambda x: process(x, model))
-        match_result = process_result.bind(lambda x: match(x, model))
-        validate_result = match_result.bind(validate)
-        project_result = validate_result.bind(project)
-        final_result = project_result.bind(
-            lambda final: Success(Timestamped(final, time))
+        # compress_result = compress(timestamped_payload.value)
+        # process_result = compress_result.bind(lambda x: process(x, model))
+        # match_result = process_result.bind(lambda x: match(x, model))
+        # validate_result = match_result.bind(validate)
+        # project_result = validate_result.bind(project)
+        # final_result = project_result.bind(
+        #     lambda final: Success(Timestamped(final, time))
+        # )
+        # return final_result
+
+        return (
+            compress(timestamped_payload.value)
+            .bind(lambda x: process(x, model))
+            .bind(lambda x: match(x, model))
+            .bind(validate)
+            .bind(project)
+            .bind(lambda final: Success(Timestamped(final, time)))
         )
-        return final_result
 
     return pipeline

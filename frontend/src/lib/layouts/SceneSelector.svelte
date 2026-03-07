@@ -8,7 +8,8 @@
 	import Header from '$lib/components/Header.svelte';
 	import Heading from '$lib/components/Heading.svelte';
 	import CoordsPreview from '$lib/components/CoordsPreview.svelte';
-	import { onMount } from 'svelte';
+	import type { GazeProjection } from '$lib/components/CoordsPreview.svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { apiRoutes } from '$lib/connection.svelte';
 	import type { Session } from '$lib/structs';
 
@@ -22,6 +23,45 @@
 	let loading: boolean = $state(true);
 	let error: string | null = $state(null);
 	const maxRetries: number = 3;
+
+	let gazeProjections: GazeProjection[] = $state([]);
+	let gazeSocket: WebSocket | null = null;
+
+	function connectGazeSocket() {
+		const wsUrl =
+			env === 'test'
+				? null
+				: `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws/gaze`;
+		if (!wsUrl) return;
+
+		gazeSocket = new WebSocket(wsUrl);
+
+		gazeSocket.onmessage = (event) => {
+			try {
+				const data = JSON.parse(event.data) as {
+					timestamp: number;
+					projections: GazeProjection[];
+				};
+				gazeProjections = data.projections;
+			} catch (e) {
+				console.error('Failed to parse gaze WS message:', e);
+			}
+		};
+
+		gazeSocket.onerror = (e) => {
+			console.error('Gaze WebSocket error:', e);
+		};
+
+		gazeSocket.onclose = () => {
+			gazeSocket = null;
+		};
+	}
+
+	function disconnectGazeSocket() {
+		gazeSocket?.close();
+		gazeSocket = null;
+		gazeProjections = [];
+	}
 
 	const selectedClients = $derived(clients.filter((_, index) => mask[index]));
 
@@ -41,6 +81,13 @@
 					throw new Error(`Session creation failed: ${response.status} ${response.statusText}`);
 				}
 				console.log('Session created successfully');
+				const controlResponse = await apiRoutes.control(true);
+				if (!controlResponse.ok) {
+					throw new Error(
+						`Control start failed: ${controlResponse.status} ${controlResponse.statusText}`
+					);
+				}
+				console.log('Control started successfully');
 			}
 		} catch (err) {
 			const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
@@ -132,6 +179,11 @@
 
 	onMount(async () => {
 		await fetchData();
+		connectGazeSocket();
+	});
+
+	onDestroy(() => {
+		disconnectGazeSocket();
 	});
 </script>
 
@@ -194,7 +246,7 @@
 
 				<div class="col-span-2 row-span-1 flex flex-col justify-center items-center gap-2">
 					<Heading title="Preview" color="green" />
-					<CoordsPreview />
+					<CoordsPreview projections={gazeProjections} />
 
 					<!-- Selection Summary -->
 					{#if selectedClients.length > 0}
